@@ -1,13 +1,13 @@
 node {
     stage ("checkout") {
-        sh 'echo checkout'
+        git 'https://github.com/pei-wang/emailService.git'
     }
 
     stage ("build"){
-        sh 'echo build'
+        sh 'gradlew build'
     }
 
     stage ("deploy"){
-        sh 'echo deploy'
+        sh 'java -jar emailService-0.0.1-SNAPSHOT.jar &'
     }
 }
