@@ -5,6 +5,7 @@ node {
 
     stage ("build"){
         sh 'pwd'
+        sh 'chmod a+x gradlew'
         sh './gradlew build'
     }
 
