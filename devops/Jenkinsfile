@@ -4,7 +4,8 @@ node {
     }
 
     stage ("build"){
-        sh 'gradlew build'
+        sh 'pwd'
+        sh './gradlew build'
     }
 
     stage ("deploy"){
