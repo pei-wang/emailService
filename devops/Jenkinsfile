@@ -10,6 +10,16 @@ node {
     }
 
     stage ("deploy"){
-        sh 'java -jar emailService-0.0.1-SNAPSHOT.jar &'
+        sh 'java -jar ./build/libs/emailService-0.0.1-SNAPSHOT.jar &'
+        sleep time: 1, unit: 'MINUTES'
+        String appcheck = sh(
+                script:'curl -sL -w "%{http_code}" localhost:10080/health -o /dev/null',
+                returnStdout: true
+        ).trim()
+        if(appcheck == '200'){
+            currentBuild.result='SUCCESS'
+        }else{
+            currentBuild.result='FAILURE'
+        }
     }
 }
