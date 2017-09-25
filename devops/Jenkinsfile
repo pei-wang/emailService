@@ -10,7 +10,8 @@ node {
     }
 
     stage ("deploy"){
-        sh 'java -jar ./build/libs/emailService-0.0.1-SNAPSHOT.jar &'
+        sh 'chmod a+x ./devops/startService.sh'
+        sh './startService.sh'
         sleep time: 1, unit: 'MINUTES'
         String appcheck = sh(
                 script:'curl -sL -w "%{http_code}" localhost:10080/health -o /dev/null',
