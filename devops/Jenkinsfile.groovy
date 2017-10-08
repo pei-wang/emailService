@@ -10,8 +10,11 @@ node {
     }
 
     stage ("deploy"){
-        sh 'chmod a+x ./devops/startService.sh'
-        sh './startService.sh'
+        git 'https://github.com/pei-wang/pei-automation-jobs.git'
+        dir('./') {
+            sh 'ansible-playbook stop_email_service.yml'
+            sh 'ansible-playbook java_deploy.yml'
+        }
         sleep time: 1, unit: 'MINUTES'
         String appcheck = sh(
                 script:'curl -sL -w "%{http_code}" localhost:10080/health -o /dev/null',
