@@ -1,6 +1,5 @@
 package com.pei.api.emailService.controllers;
 
-import com.pei.api.emailService.Configuration.EmailConfiguration;
 import com.pei.api.emailService.entity.EmailMessage;
 import com.pei.api.emailService.services.SimpleEmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,9 @@ public class MailController {
     @Autowired
     private SimpleEmailSenderService simpleEmailSenderService;
 
-    @Autowired
-    private EmailConfiguration emailConfiguration;
-
     @PostMapping("/email")
     public String sendEmail(@RequestBody EmailMessage emailMessage) throws MessagingException {
         simpleEmailSenderService.send(emailMessage);
-        return "hello world";
+        return "{\"message\":\"already sent\"}";
     }
 }
