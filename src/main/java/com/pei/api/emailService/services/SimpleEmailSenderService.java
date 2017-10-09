@@ -3,8 +3,11 @@ package com.pei.api.emailService.services;
 import com.pei.api.emailService.Configuration.EmailConfiguration;
 import com.pei.api.emailService.entity.EmailMessage;
 import com.pei.api.emailService.entity.MailAuthenticator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import javax.annotation.PostConstruct;
 import javax.mail.Message;
@@ -17,6 +20,8 @@ import java.util.Properties;
 
 @Service
 public class SimpleEmailSenderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SimpleEmailSenderService.class);
 
     @Autowired
     private EmailConfiguration emailConfiguration;
@@ -39,11 +44,15 @@ public class SimpleEmailSenderService {
     }
 
     public void send(EmailMessage emailMessage) throws MessagingException {
+        logger.info(emailMessage.getFrom() + " send email to " + emailMessage.getTo());
+        long start = System.currentTimeMillis();
         MimeMessage mimeMessage = new MimeMessage(session);
         mimeMessage.setFrom(new InternetAddress(emailMessage.getFrom()));
         mimeMessage.setRecipients(Message.RecipientType.TO, emailMessage.getTo());
         mimeMessage.setSubject(emailMessage.getSubject());
         mimeMessage.setContent(emailMessage.getContent(), emailMessage.getContentType());
         Transport.send(mimeMessage);
+        long end = System.currentTimeMillis();
+        logger.info("This email sent use " + (end - start) + " ms");
     }
 }
